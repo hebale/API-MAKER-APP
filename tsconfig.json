@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "./public/",
+    "typeRoots": ["./node_modules/@types"],
+    "strict": true,
+    "target": "es5",
+    "module": "ES2015",
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "noImplicitThis": true,
+    "moduleResolution": "node",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules/*"]
+}

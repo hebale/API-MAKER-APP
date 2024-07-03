@@ -1,0 +1,20 @@
+{
+  "path": "/get",
+  "headers": [],
+  "description": "API 테스트 GET",
+  "methods": {
+    "GET": {
+      "delay": 0,
+      "status": 200
+    }
+  },
+  "pipeline": {
+    "GET": {
+      "isActive": false,
+      "code": ""
+    }
+  },
+  "response": "GET Succeed!!",
+  "createdDate": "2024-07-02T11:15:11.836Z",
+  "updatedDate": "2024-07-02T11:15:50.815Z"
+}
