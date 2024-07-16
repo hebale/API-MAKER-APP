@@ -67,9 +67,10 @@ const Summary = ({ onToggleExpand }: { onToggleExpand: () => void }) => {
     >
       <Stack className="path-stack">
         <Box>
-          {Object.keys(methods).map((method) => (
-            <Chip key={method} label={method} />
-          ))}
+          {['GET', 'POST', 'PATCH', 'PUT', 'DELETE'].map((method) => {
+            if (methods[method]) return <Chip key={method} label={method} />;
+            return null;
+          })}
           {description && (
             <Typography>{markSearchValue(description)}</Typography>
           )}
@@ -106,7 +107,7 @@ const Summary = ({ onToggleExpand }: { onToggleExpand: () => void }) => {
           url={`/api/v1/json/download?path=${path}`}
           fileName={`api${path.split('/').join('_')}`}
         />
-        <EditApiDialog title="JSON" path={path} />
+        <EditApiDialog path={path} />
       </Stack>
     </AccordionSummary>
   );

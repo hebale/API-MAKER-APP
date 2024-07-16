@@ -1,48 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Paper,
-  FormGroup,
-  FormLabel,
-  FormControl,
-  Select,
-  Checkbox,
-  IconButton,
-  Typography,
-} from '@mui/material';
-
+import { useState, createContext } from 'react';
+import { Box, Stack, Typography } from '@mui/material';
+import Ribbon from './Ribbon';
 import Form from './Form';
-import Result from './Result';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import type { ApiData } from '~/types/components';
 
-const value = {
-  'is TEST': [
-    123,
-    3124,
-    342523,
-    {
-      'good-job': true,
-    },
-  ],
+export type ApiDispatchProps = {
+  update: (value: ApiData) => void;
 };
 
-const PipelineBox = () => {
-  const [code, setCode] = useState('');
-  const [result, setResult] = useState('Default Result');
+export const ApiContext = createContext<ApiData | {}>({});
+export const ApiDispatchContext = createContext<ApiDispatchProps>({
+  update: (value) => {},
+});
 
-  useEffect(() => {
-    setResult(JSON.stringify(value, null, 2));
-  }, []);
+const PipelineBox = () => {
+  const [api, setApi] = useState<ApiData | {}>({});
+
+  const dispatch = {
+    reset: () => setApi({}),
+    update: (api: ApiData) => {
+      setApi((prev) => ({ ...prev, ...api }));
+    },
+  };
 
   return (
-    <Paper elevation={2} sx={{ p: 1 }}>
-      <Typography variant="subtitle1" component="p">
-        PIPELINE
-      </Typography>
-      <Form />
+    <Box className="api-pipeline">
+      <Stack>
+        <Typography>Pipeline 관리</Typography>
+      </Stack>
 
-      <KeyboardDoubleArrowDownIcon />
-      <Result data={result} />
-    </Paper>
+      <ApiDispatchContext.Provider value={dispatch}>
+        <ApiContext.Provider value={api}>
+          <Ribbon />
+          <Form />
+        </ApiContext.Provider>
+      </ApiDispatchContext.Provider>
+    </Box>
   );
 };
 

@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 
-type LogData = {
+export type LogData = {
   ip: string;
   path: string;
   method: string;
@@ -9,10 +9,20 @@ type LogData = {
   timeStamp: number;
 };
 
+export type LogDispatchAction = {
+  clear: () => void;
+};
+
 export const LogContext = createContext<LogData[]>([]);
+export const LogDispatchContext = createContext<LogDispatchAction>({
+  clear: () => {},
+});
 
 const LogProvider = ({ children }: { children: ReactNode }) => {
   const [logs, setLogs] = useState<LogData[]>([]);
+  const dispatch: LogDispatchAction = {
+    clear: () => setLogs([]),
+  };
 
   useEffect(() => {
     const eventSource = new EventSource(`/sse`, { withCredentials: true });
@@ -29,7 +39,11 @@ const LogProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
-  return <LogContext.Provider value={logs}>{children}</LogContext.Provider>;
+  return (
+    <LogDispatchContext.Provider value={dispatch}>
+      <LogContext.Provider value={logs}>{children}</LogContext.Provider>
+    </LogDispatchContext.Provider>
+  );
 };
 
 export default LogProvider;

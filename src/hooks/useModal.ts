@@ -6,7 +6,7 @@ import type { ModalProps } from '~/types/features';
 const useModal = () => {
   const { open, close } = useContext(ModalDispatchContext);
   const openModal = (modal: ModalProps) =>
-    open({ id: new Date().getTime(), ...modal });
+    open({ id: performance.now(), ...modal });
   const closeModal = (id: number) => close(id);
 
   return { openModal, closeModal };

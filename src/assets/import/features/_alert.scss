@@ -1,0 +1,16 @@
+.alert-box {
+  z-index: 1600;
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  .slide + .slide {
+    margin-top: 6px;
+  }
+  .MuiAlert-root {
+    padding: 12px 20px;
+    border: 1px solid $secondary-color;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    background: $background;
+  }
+}

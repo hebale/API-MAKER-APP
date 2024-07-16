@@ -1,13 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
 import { Box, ButtonGroup } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { ApiContext } from '~/components/ApiBox/ListItem';
 import Monaco from '~/features/Monaco';
 import CopyButton from '~/features/CopyButton';
-import SaveButton from '~/features/SaveButton';
-import RefreshButton from '~/features/RefreshButton';
-import { ApiContext } from '~/components/ApiBox/ListItem';
-import { ApiData } from '~/types/components';
+import UtilButton from '~/features/UtilButton';
 import useAlert from '~/hooks/useAlert';
 import { patchApiResponse } from '~/api';
+import type { ApiData } from '~/types/components';
 import type { editor } from 'monaco-editor';
 
 const Response = () => {
@@ -32,7 +33,6 @@ const Response = () => {
   const onRefreshCode = () => setCode(JSON.stringify(response, null, 2));
 
   const onSaveCode = async () => {
-    console.log(validate);
     if (validate.length) {
       return openAlert({
         type: 'error',
@@ -54,10 +54,10 @@ const Response = () => {
   };
 
   return (
-    <Box>
+    <Box className="api-response">
       <Monaco
         value={code}
-        height={450}
+        height="auto"
         onChange={(data) => setCode(data ?? '')}
         onValidate={(makers) => onValidateCode(makers)}
       >
@@ -78,12 +78,18 @@ const Response = () => {
               })
             }
           />
-          <RefreshButton
+          <UtilButton
             title="Refresh"
+            icon={<RefreshIcon />}
             disabled={isChanged}
             onClick={onRefreshCode}
           />
-          <SaveButton title="Save" disabled={isChanged} onClick={onSaveCode} />
+          <UtilButton
+            title="Save"
+            icon={<SaveIcon />}
+            disabled={isChanged}
+            onClick={onSaveCode}
+          />
         </ButtonGroup>
       </Monaco>
     </Box>

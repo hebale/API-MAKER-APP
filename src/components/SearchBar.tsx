@@ -39,8 +39,6 @@ const SearchBar = ({
         : ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     ) as string[];
 
-    console.log(filter.join(','));
-
     searchParam.set('methods', filter.join(','));
     setSearchParam(searchParam);
 

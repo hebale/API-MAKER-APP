@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Box, ButtonGroup } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Monaco from '~/features/Monaco';
 import CopyButton from '~/features/CopyButton';
-import SaveButton from '~/features/SaveButton';
-import RefreshButton from '~/features/RefreshButton';
+import UtilButton from '~/features/UtilButton';
 import { getApi, putApi } from '~/api';
 import schemas from '~/schema';
 import useAlert from '~/hooks/useAlert';
@@ -81,12 +82,18 @@ const Contents = ({ path }: { path: string }) => {
               })
             }
           />
-          <RefreshButton
+          <UtilButton
             title="Refresh"
+            icon={<RefreshIcon />}
             disabled={isChanged}
             onClick={onRefreshCode}
           />
-          <SaveButton title="Save" disabled={isChanged} onClick={onSaveCode} />
+          <UtilButton
+            title="Save"
+            icon={<SaveIcon />}
+            disabled={isChanged}
+            onClick={onSaveCode}
+          />
         </ButtonGroup>
       </Monaco>
     </Box>

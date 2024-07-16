@@ -8,10 +8,16 @@ import type { OnMount } from '@monaco-editor/react';
 type ViewerProps = {
   language?: string;
   height?: number | 'auto';
+  maxHeight?: number;
   value: string;
 };
 
-const Viewer = ({ language = 'json', height = 'auto', value }: ViewerProps) => {
+const Viewer = ({
+  language = 'json',
+  height = 'auto',
+  maxHeight,
+  value,
+}: ViewerProps) => {
   const editorRef = useRef<null | editor.IStandaloneCodeEditor>(null);
   const monaco = useMonaco();
 
@@ -38,12 +44,8 @@ const Viewer = ({ language = 'json', height = 'auto', value }: ViewerProps) => {
 
   return (
     <Box
-      sx={{
-        border: '1px solid #ddd',
-        '& .monaco-editor .view-overlays .current-line': {
-          display: 'none',
-        },
-      }}
+      className="monaco viewer"
+      sx={{ ...(maxHeight && { maxHeight, overflowY: 'auto' }) }}
     >
       <Editor
         loading={<CircularProgress thickness={5} />}
@@ -56,10 +58,13 @@ const Viewer = ({ language = 'json', height = 'auto', value }: ViewerProps) => {
           minimap: { enabled: false },
           roundedSelection: true,
           scrollBeyondLastLine: false,
-          folding: false,
+          lineNumbersMinChars: 3,
           lineDecorationsWidth: 0,
           lineNumbers: 'off',
           readOnly: true,
+          folding: false,
+          renderLineHighlight: 'none',
+          renderWhitespace: 'none',
         }}
         {...(height !== 'auto' && { height })}
       />

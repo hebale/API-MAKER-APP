@@ -27,7 +27,7 @@ const Dialogs = () => {
     <>
       {dialogs.map((dialog) => {
         const {
-          id = new Date().getTime(),
+          id = performance.now(),
           open,
           title,
           content,
@@ -58,6 +58,7 @@ const Dialogs = () => {
               <CloseIcon />
             </IconButton>
             <DialogContent>
+              {/* 의존성 주입 확장성 수정필요 */}
               <DialogContentContext.Provider value={setContents}>
                 {content}
               </DialogContentContext.Provider>
@@ -66,7 +67,6 @@ const Dialogs = () => {
               <DialogActions sx={{ py: 2 }}>
                 {actions.map((action, index) => {
                   const { text, onAction, ...rest }: ActionProps = action;
-
                   return (
                     <Button
                       key={`${text}_${index}`}

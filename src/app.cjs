@@ -2,7 +2,6 @@ const $path = require('path');
 const $express = require('express');
 const $dotenv = require('dotenv');
 const $figlet = require('figlet');
-
 const loader = require('./loaders/index.cjs');
 const service = require('./service/index.cjs');
 

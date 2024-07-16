@@ -1,9 +1,8 @@
 import React, {
   ChangeEvent,
-  ForwardedRef,
-  forwardRef,
   useState,
   useCallback,
+  forwardRef,
   useImperativeHandle,
 } from 'react';
 import {
@@ -22,6 +21,7 @@ import { deepClone, debounce } from '~/utils';
 import useAlert from '~/hooks/useAlert';
 import type { editor } from 'monaco-editor';
 import type { ApiData } from '~/api';
+import type { ForwardedRef } from 'react';
 
 export type RefType = {
   ref: ForwardedRef<EventRef>;
@@ -114,7 +114,7 @@ const Form = (_: null, ref: RefType) => {
   };
 
   return (
-    <Box className="form-box">
+    <Box className="input-form">
       <FormGroup>
         <FormLabel
           required
@@ -141,7 +141,7 @@ const Form = (_: null, ref: RefType) => {
       <FormGroup>
         <FormLabel>Headers</FormLabel>
         <Box>
-          <MapInput datas={formData.headers} onChange={onChangeHeader} />
+          <MapInput data={formData.headers} onChange={onChangeHeader} />
         </Box>
       </FormGroup>
       <FormGroup>

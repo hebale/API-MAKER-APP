@@ -1,0 +1,74 @@
+{
+  "path": "/sample",
+  "headers": [],
+  "description": "샘플 API",
+  "methods": {
+    "POST": {
+      "delay": 0,
+      "status": 200
+    },
+    "DELETE": {
+      "delay": 0,
+      "status": 200
+    },
+    "PUT": {
+      "delay": 0,
+      "status": 200
+    },
+    "GET": {
+      "delay": 0,
+      "status": 200
+    },
+    "PATCH": {
+      "delay": 0,
+      "status": 200
+    }
+  },
+  "pipeline": {
+    "POST": {
+      "isActive": true,
+      "value": "function pipeline(request, get, set) {\n\t// const { query, body} = request 요청정보\n\t// const data = get(); 데이터 가저오기\n\t// set((prev) => prev); 데이터 업데이트\n\n\t// body로 전달되는 값을 data에 추가함\n\tconst { body } = request;\n\t\n\tif(body) {\n\t\ttry {\n\t\t\tset((prev) => [\n\t\t\t\t...prev,\n\t\t\t\tbody\n\t\t\t]);\n\t\t\t\n\t\t\treturn {\n\t\t\t\tcode: 200,\n\t\t\t\tmessage: 'Ok'\n\t\t\t}\n\t\t} catch(err) {\n\t\t\treturn new Error(err);\n\t\t}\n\t} else {\n\t\treturn {\n\t\t\tcode: 400,\n\t\t\tmessage: 'error'\n\t\t};\n\t}\n}"
+    },
+    "DELETE": {
+      "isActive": true,
+      "value": "function pipeline(request, get, set) {\n\t// const { query, body} = request 요청정보\n\t// const data = get(); 데이터 가저오기\n\t// set((prev) => prev); 데이터 업데이트\n\n\t// body로 전달되는 id값과 매칭되는 정보의 data를 삭제함\n\tconst { body } = request;\n\t\n\tif(body) {\n\t\ttry {\n\t\t\tset((prev) => prev.filter(({ id }) => +body.id !== id ));\n\n\t\t\treturn {\n\t\t\t\tcode: 200,\n\t\t\t\tmessage: 'Ok'\n\t\t\t}\n\t\t} catch(err) {\n\t\t\treturn new Error(err);\n\t\t}\n\t} else {\n\t\treturn {\n\t\t\tcode: 400,\n\t\t\tmessage: 'error'\n\t\t};\n\t}\n}"
+    },
+    "PUT": {
+      "isActive": true,
+      "value": "function pipeline(request, get, set) {\n\t// const { query, body} = request 요청정보\n\t// const data = get(); 데이터 가저오기\n\t// set((prev) => prev); 데이터 업데이트\n\n\t// body로 전달되는 id값과 매칭되는 정보의 data를 교체함\n\tconst { body } = request;\n\t\n\tif(body) {\n\t\ttry {\n\t\t\tset((prev) => prev.map((list) => {\n\t\t\t\t\tconst { id } = list;\n\t\t\t\t\tif(+body.id === id) {\n\t\t\t\t\t\treturn body\n\t\t\t\t\t}\n\n\t\t\t\t\treturn list;\n\t\t\t\t}));\n\n\t\t\treturn {\n\t\t\t\tcode: 200,\n\t\t\t\tmessage: 'Ok'\n\t\t\t}\n\t\t} catch(err) {\n\t\t\treturn new Error(err);\n\t\t}\n\t} else {\n\t\treturn {\n\t\t\tcode: 400,\n\t\t\tmessage: 'error'\n\t\t};\n\t}\n}"
+    },
+    "GET": {
+      "isActive": true,
+      "value": "function pipeline(request, get, set) {\n\t// const { query, body} = request 요청정보\n\t// const data = get(); 데이터 가저오기\n\t// set((prev) => prev); 데이터 업데이트\t\n\t\n\t// query의 id와 매칭되는 값을 검색\n\tconst { query } = request;\n\n\tif(query.id) {\n\t\treturn get().filter(({ id }) => +query.id === id);\n\t} else {\n\t\treturn get();\n\t}\n}"
+    },
+    "PATCH": {
+      "isActive": true,
+      "value": "function pipeline(request, get, set) {\n\t// const { query, body} = request 요청정보\n\t// const data = get(); 데이터 가저오기\n\t// set((prev) => prev); 데이터 업데이트\n\n\t// body로 전달되는 id값과 매칭되는 정보의 data를 수정함\n\tconst { body } = request;\n\t\n\tif(body) {\n\t\ttry {\n\t\t\tset((prev) => prev.map((list) => {\n\t\t\t\t\tconst { id } = list;\n\t\t\t\t\tif(+body.id === id) {\n\t\t\t\t\t\treturn {...list, ...body};\n\t\t\t\t\t}\n\n\t\t\t\t\treturn list;\n\t\t\t\t}));\n\n\t\t\treturn {\n\t\t\t\tcode: 200,\n\t\t\t\tmessage: 'Ok'\n\t\t\t}\n\t\t} catch(err) {\n\t\t\treturn new Error(err);\n\t\t}\n\t} else {\n\t\treturn {\n\t\t\tcode: 400,\n\t\t\tmessage: 'error'\n\t\t};\n\t}\n}"
+    }
+  },
+  "response": [
+    {
+      "id": 1,
+      "title": "타이틀1",
+      "description": "설명글 설명글1",
+      "isPublic": true,
+      "created": "admin"
+    },
+    {
+      "id": 2,
+      "title": "타이틀2",
+      "description": "설명글 설명글2",
+      "isPublic": true,
+      "created": "user"
+    },
+    {
+      "id": 3,
+      "title": "타이틀3",
+      "description": "설명글 설명글3",
+      "isPublic": false,
+      "created": "admin"
+    }
+  ],
+  "createdDate": "2024-07-16T01:40:03.077Z",
+  "updatedDate": "2024-07-16T07:14:04.068Z"
+}

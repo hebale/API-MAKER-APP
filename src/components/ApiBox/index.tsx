@@ -19,27 +19,32 @@ const ApiBox = () => {
     ) as string[];
 
     setApis(
-      data?.filter((api) => {
-        const { path, methods, description } = api;
-        return (
-          (path.indexOf(keyword) > -1 || description?.indexOf(keyword) > -1) &&
-          // !Object.keys(methods).length) ||
-          Object.keys(methods).some((method) => filter.indexOf(method) > -1)
-        );
-        // )
-      })
+      data
+        ?.filter((api) => {
+          const { path, methods, description } = api;
+
+          if (!Object.keys(methods).length) return true; // method 아무 항목도 없으면 항상노출
+          return (
+            (path.indexOf(keyword) > -1 ||
+              description?.indexOf(keyword) > -1) &&
+            Object.keys(methods).some((method) => filter.indexOf(method) > -1)
+          );
+        })
+        .sort((a, b) => {
+          return a.createdDate > b.createdDate ? -1 : 1;
+        })
     );
   }, [dataUpdatedAt, location.search]);
 
   return (
-    <>
+    <Box className="api-list">
       <SearchBar />
       {apis && apis.length > 0 ? (
         apis.map((api) => <ListItem key={api.path} data={api} />)
       ) : (
         <Box className="empty-box">검색된 API가 없습니다.</Box>
       )}
-    </>
+    </Box>
   );
 };
 

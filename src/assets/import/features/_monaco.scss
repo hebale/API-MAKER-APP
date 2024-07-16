@@ -1,0 +1,40 @@
+.monaco {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  &.viewer {
+    .view-overlays {
+      display: none;
+    }
+  }
+  .ribbon {
+    z-index: -1;
+    padding: 2px 14px 0;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    border-bottom: 1px solid $secondary-color;
+    border-radius: 4px 4px 0 0;
+    background: $secondary-variant;
+    .MuiButtonGroup-root {
+      width: 100%;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+  section {
+    padding: 12px 0;
+  }
+  // monaco style
+  .monaco-editor .decorationsOverviewRuler {
+    display: none !important;
+  }
+}
+
+.MuiCollapse-root {
+  + .MuiCollapse-root {
+    margin-top: 8px;
+  }
+}

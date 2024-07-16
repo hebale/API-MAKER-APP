@@ -31,6 +31,9 @@ export type ApiData = {
   description: string;
   headers: Header[];
   methods: Methods;
+  pipeline: Pipeline;
   response: any;
   searchText?: string;
+  updatedDate: string;
+  createdDate: string;
 };

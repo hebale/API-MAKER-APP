@@ -1,0 +1,30 @@
+.map-input {
+  padding: 0 6px 8px;
+  box-sizing: border-box;
+  .MuiTableRow-root {
+    .MuiCheckbox-root {
+      padding: 5px;
+    }
+    + .MuiTableRow-root {
+      .MuiStack-root {
+        margin-top: 4px;
+      }
+    }
+  }
+  .MuiTableCell-root {
+    border: none;
+    .MuiStack-root {
+      gap: 8px;
+      .MuiInputBase-root {
+        width: calc(50% - 24px);
+      }
+      > div {
+        width: 40px;
+      }
+    }
+  }
+  .MuiTableCell-root:first-child {
+    width: 50px;
+    text-align: center;
+  }
+}

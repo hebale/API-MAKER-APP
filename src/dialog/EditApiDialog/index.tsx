@@ -1,11 +1,11 @@
-import { Stack, IconButton, Typography } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import useModal from '~/hooks/useModal';
 import useDialog from '~/hooks/useDialog';
+import UtilButton from '~/features/UtilButton';
 import Contents from './Contents';
 import { deleteApi } from '~/api';
 
-const EditApiDialog = ({ title, path }: { title: string; path: string }) => {
+const EditApiDialog = ({ path }: { path: string }) => {
   const { openModal } = useModal();
   const { openDialog } = useDialog();
   const { mutate } = deleteApi();
@@ -38,16 +38,7 @@ const EditApiDialog = ({ title, path }: { title: string; path: string }) => {
     });
   };
 
-  return (
-    <IconButton onClick={open} disableRipple={true}>
-      <Stack sx={{ alignItems: 'center' }}>
-        <CodeIcon />
-        <Typography sx={{ fontSize: '0.6rem' }}>
-          {title ? title : 'Edit'}
-        </Typography>
-      </Stack>
-    </IconButton>
-  );
+  return <UtilButton title="JSON" icon={<CodeIcon />} onClick={open} />;
 };
 
 export default EditApiDialog;

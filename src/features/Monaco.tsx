@@ -15,6 +15,8 @@ type MonacoProps = {
   onChange?: (value: string) => void;
   onValidate?: (marker: editor.IMarker[], value?: string) => void;
   children?: any;
+  startCode?: string;
+  endCode?: string;
 };
 
 const Monaco = ({
@@ -65,12 +67,8 @@ const Monaco = ({
   };
 
   return (
-    <Box className="monaco-box">
-      {children && (
-        <Stack className="editor-ribbon" flexDirection="row">
-          {children}
-        </Stack>
-      )}
+    <Box className="monaco">
+      {children && <Stack className="ribbon">{children}</Stack>}
       <Editor
         loading={<CircularProgress thickness={5} />}
         defaultLanguage={language}
@@ -88,6 +86,7 @@ const Monaco = ({
           minimap: { enabled: false },
           roundedSelection: true,
           scrollBeyondLastLine: false,
+          lineNumbersMinChars: 3,
           ...options,
         }}
         {...(height !== 'auto' && { height })}

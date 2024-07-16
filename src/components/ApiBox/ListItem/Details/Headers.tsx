@@ -1,10 +1,11 @@
 import { useContext, useCallback } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
-import MapInput, { MapData } from '~/features/MapInput';
+import MapInput from '~/features/MapInput';
 import { ApiContext } from '~/components/ApiBox/ListItem';
 import { ApiData } from '~/types/components';
 import { postApiHeader, patchApiHeader, deleteApiHeader } from '~/api';
 import { debounce } from '~/utils';
+import type { MapData } from '~/features/MapInput';
 
 const Headers = () => {
   const { path, headers } = useContext(ApiContext) as ApiData;
@@ -64,13 +65,13 @@ const Headers = () => {
   };
 
   return (
-    <Box className="headers-box">
+    <Box className="api-headers">
       <Stack direction="row">
         <Typography>active</Typography>
         <Typography>key</Typography>
         <Typography>value</Typography>
       </Stack>
-      <MapInput datas={headers} onChange={onChange} />
+      <MapInput data={headers} onChange={onChange} />
     </Box>
   );
 };

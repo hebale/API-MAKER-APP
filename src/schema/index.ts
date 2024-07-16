@@ -71,14 +71,14 @@ const schemas = [
                 isActive: {
                   type: 'boolean',
                 },
-                code: {
+                value: {
                   type: 'string',
                 },
               },
               propertyNames: {
-                enum: ['isActive', 'code'],
+                enum: ['isActive', 'value'],
               },
-              required: ['isActive', 'code'],
+              required: ['isActive', 'value'],
             },
           },
           propertyNames: {

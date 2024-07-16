@@ -1,0 +1,95 @@
+.api-log {
+  position: sticky;
+  padding: 10px 14px;
+  border: 1px solid $secondary-color;
+  border-radius: 4px;
+  background: $background;
+  > .MuiStack-root {
+    min-height: 32px;
+    gap: 16px;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    > .MuiTypography-root {
+      display: flex;
+      padding: 0;
+      margin-right: auto;
+      height: 44px;
+      font-weight: 600;
+      align-items: center;
+    }
+  }
+  > .MuiBox-root {
+    padding: 8px 10px;
+    border: 1px solid $secondary-color;
+    box-sizing: border-box;
+    &:first-of-type {
+      border-radius: 4px 4px 0 0;
+    }
+    &:last-of-type {
+      border-radius: 0 0 4px 4px;
+    }
+    + .MuiBox-root {
+      border-top: none;
+    }
+    .MuiStack-root {
+      padding: 0;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .MuiChip-root {
+        border: 1px solid $secondary-color;
+        background: $secondary-variant;
+      }
+      .MuiTypography-root {
+        margin-left: 12px;
+        line-height: 1.2;
+        font-size: 0.8rem;
+        word-break: break-all;
+        + .MuiTypography-root {
+          margin-left: auto;
+          font-size: 0.7rem;
+        }
+      }
+      .MuiButton-root {
+        margin-left: 8px;
+        width: 24px;
+        min-width: 20px;
+        height: 24px;
+        font-size: 0.4rem;
+        .MuiSvgIcon-root {
+          width: 0.8rem;
+          height: 0.8rem;
+        }
+      }
+      + .MuiStack-root {
+        padding: 8px 12px 12px;
+        margin-top: 6px;
+        gap: 6px;
+        border-radius: 6px;
+        flex-direction: column;
+        align-items: flex-start;
+        background: $secondary-variant;
+        dl {
+          margin: 0;
+          width: 100%;
+          dt {
+            margin: 0;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+          }
+          dd {
+            margin: 0;
+            font-size: 0.55rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            + dt {
+              margin-top: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

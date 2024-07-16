@@ -31,17 +31,6 @@ const api = ({ app }) => {
     clients.push(res);
   });
 
-  // LOGIN TEST CODE
-  app.use('/keycloak', (req, res) => {
-    res.type('html');
-    res.sendFile($path.resolve(__dirname, '../../auth.html'));
-  });
-
-  // app.use('/auth', (req, res) => {
-  //   res.type('html');
-  //   res.sendFile($path.resolve(__dirname, '../../auth.html'));
-  // });
-
   app.use('/*', (req, res) => {
     try {
       const filePath = glob.sync(`${$path.join(root, req.baseUrl)}/index.json`);
@@ -57,14 +46,60 @@ const api = ({ app }) => {
 
       const json = JSON.parse(response);
       const settings = json.methods[req.method];
+      const pipeline = json.pipeline[req.method];
 
       if (!settings) throw { code: 405, message: statusMessage['405'] };
 
       const { headers } = json;
-      const { delay, status, code } = settings;
-      const data = code?.isActive
-        ? eval(code.value)(req, json.response)
-        : json.response;
+      const { delay, status } = settings;
+      const { isActive, value } = pipeline;
+
+      const data = (() => {
+        try {
+          if (!isActive) return json.response;
+
+          const request = value
+            .slice(value.indexOf('(') + 1, value.indexOf(')'))
+            .split(',')[0]
+            .trim();
+          const code = value.slice(
+            value.indexOf('{') + 1,
+            value.lastIndexOf('}')
+          );
+
+          const getResponse = () => json.response;
+          const setResponse = (callback) => {
+            $fs.writeFileSync(
+              $path.join(
+                $path.resolve(process.cwd(), `./src/json${json.path}`),
+                '/index.json'
+              ),
+              JSON.stringify(
+                { ...json, response: callback(json.response) },
+                null,
+                2
+              )
+            );
+          };
+
+          const fn = new Function(request, 'get', 'set', code);
+          const result = fn(
+            { query: req.query, body: req.body },
+            getResponse,
+            setResponse
+          );
+
+          return result;
+        } catch (err) {
+          return new Error(err);
+        }
+      })();
+
+      if (data instanceof Error) {
+        return res
+          .status(400)
+          .send(`<p>Pipeline ${data.message}</p>\n<pre>${value}</pre>`);
+      }
 
       for (let i = 0; i < headers.length; i++) {
         if (headers[i].isActive) {
@@ -81,8 +116,8 @@ const api = ({ app }) => {
           query: Object.keys(req.query)
             .map((value) => `${value}=${req.query[value]}`)
             .join('&'),
-          request: req.body ?? '',
-          response: data ?? '',
+          body: Object.keys(req.body).length > 0 ? req.body : '',
+          response: Object.keys(data).length > 0 ? data : '',
           timeStamp: format(new Date(), 'yyyy-MM-dd hh:mm:ss'),
         };
 
@@ -94,11 +129,7 @@ const api = ({ app }) => {
       });
 
       setTimeout(() => {
-        res.status(status).send(
-          // status,
-          // message: statusMessage[status],
-          status === 200 ? data : []
-        );
+        res.status(status).send(status === 200 ? data : '');
       }, delay);
     } catch (err) {
       res.status(err.code).send(err);

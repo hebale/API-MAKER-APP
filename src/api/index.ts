@@ -29,7 +29,7 @@ export type Method = {
 
 export type Pipeline = {
   isActive: boolean;
-  code: string;
+  value: string;
 };
 
 export type Response = any;

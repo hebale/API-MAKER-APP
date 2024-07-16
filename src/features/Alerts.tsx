@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Box, Alert, Collapse } from '@mui/material';
+import { Box, Alert, Slide, Fade } from '@mui/material';
 import { TransitionGroup } from 'react-transition-group';
 import {
   AlertStatusContext,
@@ -15,18 +15,22 @@ const Alerts = () => {
     <Box className="alert-box">
       <TransitionGroup>
         {alerts.map((alert: AlertProps) => {
-          const { id = new Date().getTime(), type, message, timer } = alert;
+          const { id = performance.now(), type, message, timer } = alert;
 
           setTimeout(() => {
             close(id);
           }, timer ?? 3500);
 
           return (
-            <Collapse key={id}>
-              <Alert severity={type ?? 'info'} onClose={() => close(id)}>
-                {message}
-              </Alert>
-            </Collapse>
+            <Slide key={id} className="slide" direction="left" timeout={220}>
+              <div>
+                <Fade in={true}>
+                  <Alert severity={type ?? 'info'} onClose={() => close(id)}>
+                    {message}
+                  </Alert>
+                </Fade>
+              </div>
+            </Slide>
           );
         })}
       </TransitionGroup>

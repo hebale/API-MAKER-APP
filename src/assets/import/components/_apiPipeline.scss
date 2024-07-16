@@ -1,0 +1,44 @@
+.api-pipeline {
+  padding: 10px 14px;
+  border: 1px solid $secondary-color;
+  border-radius: 4px;
+  background: $background;
+  > .MuiStack-root {
+    min-height: 32px;
+    gap: 16px;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    > .MuiTypography-root {
+      padding: 0;
+      margin-right: auto;
+      font-weight: 600;
+    }
+  }
+  .ribbon {
+    .MuiFormGroup-root {
+      margin-top: 8px;
+      .MuiFormLabel-root {
+        margin-bottom: 4px;
+        font-size: 0.7rem;
+      }
+    }
+    .MuiSelect-select {
+      padding-top: 0;
+      padding-left: 0;
+      padding-bottom: 0;
+      .MuiSelect-outlined {
+        padding: 6px 8px;
+      }
+    }
+  }
+  .form {
+    margin-top: 16px;
+    .switch {
+      margin-right: auto;
+    }
+  }
+  .empty-box {
+    margin-top: 16px;
+  }
+}

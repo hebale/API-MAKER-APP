@@ -8,21 +8,21 @@ export type LogProps = {
   path: string;
   method: string;
   query: string;
-  request: any;
+  body: any;
   response: any;
-  timeStamp: number;
+  timeStamp: string;
 };
 
 const Log = ({ data }: { data: LogProps }) => {
   const [open, setOpen] = useState(false);
-  const { path, method, query, request, response, timeStamp } = data;
+  const { path, method, query, body, response, timeStamp } = data;
 
   return (
     <Box>
       <Stack>
         <Chip label={method} />
         <Typography>{`${path}${query ? '?' + query : ''}`}</Typography>
-        <Typography>{timeStamp}</Typography>
+        <Typography>{timeStamp.split(' ')[1]}</Typography>
         <Button onClick={() => setOpen((prev) => !prev)}>
           {open ? <RemoveIcon /> : <AddIcon />}
         </Button>
@@ -31,9 +31,9 @@ const Log = ({ data }: { data: LogProps }) => {
         <Stack>
           <dl>
             <dt>request</dt>
-            <dd>{JSON.stringify(request, null, 2)}</dd>
+            <dd>{body ? JSON.stringify(body, null, 2) : '-'}</dd>
             <dt>response</dt>
-            <dd>{JSON.stringify(response, null, 2)}</dd>
+            <dd>{response ? JSON.stringify(response, null, 2) : '-'}</dd>
           </dl>
         </Stack>
       )}

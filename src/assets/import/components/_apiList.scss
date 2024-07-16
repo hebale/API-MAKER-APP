@@ -1,0 +1,182 @@
+/* API 리스트 */
+.api-list {
+  .MuiAccordion-root {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    border: 1px solid $secondary-color;
+    box-shadow: none;
+    &:before {
+      display: none;
+    }
+    &.Mui-selected {
+      margin: 0;
+    }
+    &.Mui-expanded {
+      margin: 0;
+    }
+    + .MuiAccordion-root {
+      margin-top: 8px;
+    }
+    .MuiAccordionSummary-root {
+      gap: 12px;
+      border: none;
+      .MuiAccordionSummary-content {
+        gap: 16px;
+        align-items: flex-end;
+        .path-stack {
+          width: 100%;
+          font-size: 0.8rem;
+          flex-direction: column;
+          align-items: flex-start;
+          .MuiBox-root {
+            display: flex;
+            margin-bottom: 6px;
+            .MuiTypography-root {
+              margin-left: 8px;
+            }
+            .MuiChip-root {
+              border: 1px solid $secondary-color;
+              background: $secondary-variant;
+              + .MuiChip-root {
+                margin-left: 4px;
+              }
+            }
+          }
+          .MuiButtonGroup-root {
+            width: 100%;
+            border: 1px solid $secondary-color;
+            button {
+              border: none;
+              color: $primary-color;
+            }
+            .copy-button {
+              padding: 4px 6px;
+              border-right: 1px solid $secondary-color;
+              border-radius: 4px 0 0 4px;
+              background: $secondary-variant;
+              & + button {
+                padding: 0 8px;
+                width: 100%;
+                font-size: 0.9rem;
+                font-weight: 500;
+                justify-content: flex-start;
+              }
+              & + .MuiInputBase-root {
+                padding: 0 8px;
+                width: 100%;
+                input {
+                  font-size: 0.9rem;
+                }
+                &:before,
+                &:after {
+                  display: none;
+                }
+              }
+            }
+          }
+        }
+        & .ctrl-stack {
+          width: 84px;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
+    }
+    .MuiAccordionDetails-root {
+      padding: 6px 0;
+      margin-top: 10px;
+    }
+  }
+}
+
+/* API 리스트 Headers 탭 */
+.api-headers {
+  > .MuiStack-root {
+    &:first-child {
+      padding: 8px 55px 6px 0;
+      margin-bottom: 6px;
+      border-bottom: 1px solid $secondary-color;
+      border-radius: 4px 4px 0 0;
+      color: $primary-variant;
+      background: $secondary-variant;
+      justify-content: flex-end;
+      .MuiTypography-root {
+        width: 70px;
+        font-size: 0.7rem;
+        text-align: center;
+        &:last-child {
+          margin-left: 8px;
+        }
+        + .MuiTypography-root {
+          width: 50%;
+        }
+      }
+    }
+  }
+}
+
+/* API 리스트 Methods 탭 */
+.api-methods {
+  > .MuiStack-root {
+    &:first-child {
+      padding: 8px 12px 6px 0;
+      margin-bottom: 6px;
+      gap: 8px;
+      border-bottom: 1px solid $secondary-color;
+      border-radius: 4px 4px 0 0;
+      color: $primary-variant;
+      background: $secondary-variant;
+      justify-content: flex-end;
+      .MuiTypography-root {
+        width: 40px;
+        font-size: 0.7rem;
+        text-align: center;
+        + .MuiTypography-root {
+          width: 95px;
+        }
+        + .MuiTypography-root + .MuiTypography-root {
+          width: 75px;
+          margin-left: 0;
+        }
+      }
+    }
+    .MuiTypography-root {
+      & + .MuiTypography-root {
+        margin-left: 8px;
+      }
+    }
+  }
+  .MuiStack-root.method-stack {
+    padding-right: 12px;
+    .MuiOutlinedInput-root {
+      .MuiInputBase-input::-webkit-inner-spin-button {
+        opacity: 1;
+      }
+    }
+    > .MuiStack-root {
+      gap: 8px;
+      width: 240px;
+      margin-left: auto;
+      align-items: center;
+      .switch {
+        width: 110px;
+      }
+      .MuiSelect-select {
+        padding-top: 0;
+        padding-left: 0;
+        padding-bottom: 0;
+        .MuiSelect-outlined {
+          padding: 6px 8px;
+        }
+      }
+    }
+  }
+}
+
+/* API 리스트 Response 탭 */
+.api-response {
+  .monaco-editor .squiggly-warning {
+    display: none;
+  }
+}

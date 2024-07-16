@@ -13,9 +13,10 @@ import {
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { deepClone } from '~/utils';
 
-type MapInputProps = {
-  datas?: MapData[];
-  onChange: (datas: MapData[]) => void;
+export type MapInputProps = {
+  data?: MapData[];
+  useCheck?: boolean;
+  onChange: (data: MapData[]) => void;
 };
 
 export type MapData = {
@@ -27,36 +28,41 @@ export type MapData = {
 };
 
 const createMapInput = () => ({
-  // uuid: crypto.randomUUID(),
-  uuid: String(new Date().getTime()),
+  uuid: String(performance.now()),
   isActive: false,
   key: '',
   value: '',
 });
 
-const MapInput = ({ datas = [], onChange }: MapInputProps) => {
+const MapInput = ({ data, useCheck = true, onChange }: MapInputProps) => {
   const [mapData, setMapData] = useState<MapData[]>([]);
   const focusInput = useRef<HTMLInputElement[]>([]);
   const focusIndex = useRef<number | null>(null);
 
   useEffect(() => {
-    /* Focus Refs */
     if (focusIndex.current !== null) {
       focusInput.current[focusIndex.current].focus();
       focusIndex.current = null;
     }
 
-    setMapData(() => deepClone(datas).concat(createMapInput()));
-  }, [datas]);
+    if (data) {
+      return setMapData(deepClone(data).concat(createMapInput()));
+    }
 
-  const exportData = (datas: MapData[]) => {
+    if (!mapData.length || mapData.at(-1)?.key) {
+      setMapData((prev) => prev.concat(createMapInput()));
+    }
+
+    onChange(mapData);
+  }, [data ?? mapData]);
+
+  const exportData = (mapData: MapData[]) => {
     setMapData(() => {
-      onChange(datas.slice(0, datas.length - 1));
-      return datas;
+      if (data) onChange(mapData.slice(0, mapData.length - 1));
+      return mapData;
     });
   };
 
-  /* Change Data */
   const onChangeUsage = (
     e: React.ChangeEvent<HTMLInputElement>,
     uuid: string
@@ -91,12 +97,10 @@ const MapInput = ({ datas = [], onChange }: MapInputProps) => {
     );
   };
 
-  /* Change Row */
   const onRemoveRow = (uuid: string) => {
     exportData(mapData.filter((data) => data.uuid !== uuid));
   };
 
-  /* Focus & Blur */
   const onFocusData = (index: number) => {
     focusIndex.current = index;
   };
@@ -111,14 +115,16 @@ const MapInput = ({ datas = [], onChange }: MapInputProps) => {
           <TableBody>
             {mapData.map(({ uuid, isActive, key, value }, index) => (
               <TableRow key={uuid}>
-                <TableCell>
-                  <Checkbox
-                    tabIndex={-1}
-                    checked={isActive}
-                    disabled={!key}
-                    onChange={(e) => onChangeUsage(e, uuid)}
-                  />
-                </TableCell>
+                {useCheck && (
+                  <TableCell>
+                    <Checkbox
+                      tabIndex={-1}
+                      checked={isActive}
+                      disabled={!key}
+                      onChange={(e) => onChangeUsage(e, uuid)}
+                    />
+                  </TableCell>
+                )}
                 <TableCell>
                   <Stack direction="row">
                     <OutlinedInput

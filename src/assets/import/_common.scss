@@ -1,0 +1,62 @@
+.schema-tooltip {
+  &.MuiTooltip-popper[data-popper-placement*='left'] {
+    .MuiTooltip-tooltip {
+      margin-right: 8px;
+    }
+  }
+  .MuiTooltip-tooltip {
+    max-width: 100%;
+    line-height: 1.6;
+    padding: 0 18px 24px;
+    border: 1px solid $secondary-color;
+    font-size: 0.7rem;
+    color: $primary-color;
+    background: $background;
+    white-space: pre;
+    .MuiTooltip-arrow {
+      &:before {
+        border: 1px solid $secondary-color;
+        background-color: $background;
+        box-sizing: border-box;
+      }
+    }
+    .MuiButton-root {
+      padding: 0;
+      border: none;
+    }
+  }
+}
+
+.empty-box {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 220px;
+  flex-direction: column;
+  font-size: 0.7rem;
+  border: 1px dashed $secondary-color !important;
+  border-radius: 4px !important;
+  background: $background;
+  justify-content: center;
+  align-items: center;
+  color: $primary-variant;
+  .MuiSvgIcon-root {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -20px);
+    color: $primary-color;
+    animation: updown 800ms infinite;
+  }
+}
+
+@keyframes updown {
+  0% {
+    top: 0;
+  }
+  60% {
+    top: -6px;
+  }
+  100% {
+    top: 0;
+  }
+}

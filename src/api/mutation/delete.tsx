@@ -11,7 +11,7 @@ export const deleteApi = () => {
 
   return useMutation({
     mutationFn: (param: Pick<ApiParam, 'path'> & { callback?: () => void }) =>
-      http.delete('/api/v1/json', { body: { path: param.path } }),
+      http.delete('/', { body: { path: param.path } }),
     onMutate: async (param: Pick<ApiParam, 'path'>) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
@@ -25,6 +25,7 @@ export const deleteApi = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.list });
     },
     onError: (err: Error, _, context) => {
       queryClient.setQueryData(queryKeys.all, context?.origin);
@@ -50,8 +51,7 @@ export const deleteApiHeader = () => {
   const { openAlert } = useAlert();
 
   return useMutation({
-    mutationFn: (param: ApiParam) =>
-      http.delete('/api/v1/json/headers', { body: param }),
+    mutationFn: (param: ApiParam) => http.delete('/headers', { body: param }),
     onMutate: async (param: ApiParam) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
@@ -89,8 +89,7 @@ export const deleteApiMethod = () => {
   const { openAlert } = useAlert();
 
   return useMutation({
-    mutationFn: (param: ApiParam) =>
-      http.delete('/api/v1/json/methods', { body: param }),
+    mutationFn: (param: ApiParam) => http.delete('/methods', { body: param }),
     onMutate: async (param: ApiParam) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
@@ -117,8 +116,8 @@ export const deleteApiMethod = () => {
     },
     onSettled: (data, error, variables) => {
       const { path } = variables;
-      // queryClient.invalidateQueries({ queryKey: queryKeys.all });
-      // queryClient.invalidateQueries({ queryKey: queryKeys.api(path) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.api(path) });
     },
   });
 };

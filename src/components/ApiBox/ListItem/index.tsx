@@ -2,7 +2,7 @@ import { useState, useEffect, createContext } from 'react';
 import { Accordion } from '@mui/material';
 import Summary from './Summary';
 import Details from './Details';
-
+import useUserHistory from '~/hooks/useUserHistory';
 import type { ApiData } from '~/types/components';
 
 type ApiDispatchProps = {
@@ -15,7 +15,13 @@ export const ApiDispatchContext = createContext<ApiDispatchProps>({
 });
 
 const ListItems = ({ data }: { data: ApiData }) => {
-  const [expand, setExpand] = useState(false);
+  const {
+    isExpandedApiHistory,
+    setExpandedApiHistory,
+    removeExpandedApiHistory,
+  } = useUserHistory();
+
+  const [expand, setExpand] = useState(isExpandedApiHistory(data.path));
   const [api, setApi] = useState(data);
 
   useEffect(() => {
@@ -29,13 +35,19 @@ const ListItems = ({ data }: { data: ApiData }) => {
   };
 
   const onToggleExpand = () => {
-    setExpand((prev) => !prev);
+    setExpand((prev) => {
+      prev
+        ? removeExpandedApiHistory(data.path)
+        : setExpandedApiHistory(data.path);
+
+      return !prev;
+    });
   };
 
   return (
     <ApiContext.Provider value={api}>
       <ApiDispatchContext.Provider value={dispatch}>
-        <Accordion expanded={expand}>
+        <Accordion expanded={expand ?? false}>
           <Summary onToggleExpand={onToggleExpand} />
           <Details />
         </Accordion>

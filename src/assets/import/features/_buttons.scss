@@ -1,0 +1,66 @@
+.switch {
+  // gap: 3px;
+  align-items: center;
+  .MuiSwitch-root {
+    padding: 0;
+    width: 28px;
+    height: 16px;
+    .MuiButtonBase-root {
+      transform: translate(-8px, -9px);
+      &.Mui-checked {
+        transform: translate(3px, -9px);
+        + .MuiSwitch-track {
+          background: $primary-color;
+          opacity: 1;
+        }
+        .MuiSwitch-thumb {
+          border-color: $primary-color;
+        }
+      }
+    }
+    .MuiSwitch-input {
+      left: -50%;
+      width: 200%;
+    }
+    .MuiSwitch-track {
+      height: 14px;
+      border: 1px solid $secondary-color;
+      border-radius: 20px;
+      background: $secondary-variant;
+      opacity: 1;
+    }
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      transform: translateY(-50%);
+    }
+    &::before {
+      left: 10px;
+    }
+    &::after {
+      right: 10px;
+    }
+    .MuiSwitch-thumb {
+      width: 10px;
+      height: 10px;
+      margin: 2px;
+      border: 1px solid $secondary-color;
+      background: $background;
+      box-shadow: none;
+    }
+  }
+  .MuiFormControlLabel-root {
+    margin: 0;
+    flex-direction: column;
+    .MuiTypography-root {
+      margin-top: 5px;
+      line-height: 1;
+      font-size: 0.6rem;
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+}

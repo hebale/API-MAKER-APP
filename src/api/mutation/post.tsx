@@ -9,14 +9,14 @@ export const postApi = () => {
   const { openAlert } = useAlert();
 
   return useMutation({
-    mutationFn: (param: ApiData) => http.post('/api/v1/json', { body: param }),
+    mutationFn: (param: ApiData) => http.post('/', { body: param }),
     onMutate: async (param: ApiData) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
 
       queryClient.setQueryData(queryKeys.all, (origin: ApiData[]) => [
-        ...origin,
         param.data,
+        ...origin,
       ]);
 
       return { origin };
@@ -41,7 +41,7 @@ export const postApiHeader = () => {
 
   return useMutation({
     mutationFn: (params: ApiParam<Header[]>) =>
-      http.post('api/v1/json/headers', { body: params }),
+      http.post('/headers', { body: params }),
     onMutate: async (params: ApiParam<Header[]>) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
@@ -66,6 +66,9 @@ export const postApiHeader = () => {
 
       return { origin };
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+    },
     onError: (err: Error, _, context) => {
       queryClient.setQueryData(queryKeys.all, context?.origin);
       openAlert({
@@ -73,8 +76,41 @@ export const postApiHeader = () => {
         message: `오류가 발생했습니다.\nstatus: ${err.status}\nmessage: ${err.message}`,
       });
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+    onSuccess: () => {
+      // openAlert({
+      //   type: 'success',
+      //   message: 'headers 수정이 완료되었습니다.',
+      // });
+    },
+  });
+};
+
+type PosTestPipeline = {
+  path: string;
+  query: string;
+  method: string;
+  body: any;
+};
+
+export const postTestPipeline = () => {
+  const { openAlert } = useAlert();
+
+  return useMutation({
+    mutationFn: ({ path, method, query, body }: PosTestPipeline) =>
+      http.post(`/test${query ? '?' + query : ''}`, {
+        body: { path, method, body },
+      }),
+    onError: (err: Error, _, context) => {
+      openAlert({
+        type: 'error',
+        message: `오류가 발생했습니다.\nstatus: ${err.status}\nmessage: ${err.message}`,
+      });
+    },
+    onSuccess: () => {
+      openAlert({
+        type: 'success',
+        message: 'Pipeline 테스트가 성공했습니다.',
+      });
     },
   });
 };

@@ -1,20 +1,25 @@
-#contents {
-  position: relative;
-  padding: 0 32px 38px;
-  background: $secondary-variant;
-
-  .paper-box {
-    position: relative;
-    background: transparent;
-    box-shadow: none;
-    > .MuiTypography-subtitle1 {
-      font-weight: 600;
-      font-size: 3rem;
-    }
-  }
+html,
+body {
+  padding: 0;
+  margin: 0;
 }
 
-.container {
+mark {
+  color: $background;
+  background: $primary-color;
+}
+
+#app {
+  height: 100vh;
+}
+
+#header {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 24px;
   > .MuiTypography-root {
     z-index: 10;
     position: absolute;
@@ -26,38 +31,26 @@
     border-radius: 8px;
     background: $background;
   }
+  background-image: linear-gradient(
+    to bottom,
+    $secondary-variant 0%,
+    colorOpacity($secondary-variant, aa) 40px,
+    transparent 100%
+  );
 }
 
-.empty-box {
+#contents {
   position: relative;
-  display: flex;
-  width: 100%;
-  min-height: 220px;
-  flex-direction: column;
-  font-size: 0.7rem;
-  border: 1px dashed $secondary-color !important;
-  border-radius: 4px !important;
-  background: $background;
-  justify-content: center;
-  align-items: center;
-  color: $primary-variant;
-  .MuiSvgIcon-root {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -20px);
-    color: $primary-color;
-    animation: updown 800ms infinite;
-  }
-}
+  padding: 54px 32px 38px;
+  background: $secondary-variant;
 
-@keyframes updown {
-  0% {
-    top: 0;
-  }
-  60% {
-    top: -6px;
-  }
-  100% {
-    top: 0;
+  .paper-box {
+    position: relative;
+    background: transparent;
+    box-shadow: none;
+    > .MuiTypography-subtitle1 {
+      font-weight: 600;
+      font-size: 3rem;
+    }
   }
 }

@@ -3,7 +3,15 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import queryKeys from '~/api/key';
 import useAlert from '~/hooks/useAlert';
 import { deepClone } from '~/utils';
-import type { ApiParam, ApiData, Header, Method, Response, Error } from '~/api';
+import type {
+  ApiParam,
+  ApiData,
+  Header,
+  Method,
+  Pipeline,
+  Response,
+  Error,
+} from '~/api';
 
 export const patchApiPath = () => {
   const queryClient = useQueryClient();
@@ -11,7 +19,7 @@ export const patchApiPath = () => {
 
   return useMutation({
     mutationFn: (params: ApiParam<string>) =>
-      http.patch('/api/v1/json/path', { body: params }),
+      http.patch('/path', { body: params }),
     onMutate: async (params: ApiParam<string>) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = deepClone(queryClient.getQueryData(queryKeys.all));
@@ -27,9 +35,10 @@ export const patchApiPath = () => {
         });
       });
 
-      console.dir(origin);
-
       return { origin };
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.all });
     },
     onError: (err: Error, _, context) => {
       queryClient.setQueryData(queryKeys.all, context?.origin);
@@ -39,8 +48,11 @@ export const patchApiPath = () => {
         message: `오류가 발생했습니다.\nstatus: ${err.status}\nmessage: ${err.message}`,
       });
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+    onSuccess: () => {
+      openAlert({
+        type: 'success',
+        message: 'Path 수정이 완료되었습니다.',
+      });
     },
   });
 };
@@ -51,7 +63,7 @@ export const patchApiHeader = () => {
 
   return useMutation({
     mutationFn: (params: ApiParam<Header>) =>
-      http.patch('/api/v1/json/headers', { body: params }),
+      http.patch('/headers', { body: params }),
     onMutate: async (params: ApiParam<Header>) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = deepClone(queryClient.getQueryData(queryKeys.all));
@@ -71,9 +83,10 @@ export const patchApiHeader = () => {
         });
       });
 
-      console.dir(origin);
-
       return { origin };
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.all });
     },
     onError: (err: Error, _, context) => {
       queryClient.setQueryData(queryKeys.all, context?.origin);
@@ -83,8 +96,11 @@ export const patchApiHeader = () => {
         message: `오류가 발생했습니다.\nstatus: ${err.status}\nmessage: ${err.message}`,
       });
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+    onSuccess: () => {
+      // openAlert({
+      //   type: 'success',
+      //   message: 'Headers 수정이 완료되었습니다.',
+      // });
     },
   });
 };
@@ -95,7 +111,7 @@ export const patchApiMethod = () => {
 
   return useMutation({
     mutationFn: (params: ApiParam<Method>) =>
-      http.patch('/api/v1/json/methods', { body: params }),
+      http.patch('/methods', { body: params }),
     onMutate: async (params: ApiParam<Method>) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
@@ -113,6 +129,9 @@ export const patchApiMethod = () => {
 
       return { origin };
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+    },
     onError: (err: Error, _, context) => {
       queryClient.setQueryData(queryKeys.all, context?.origin);
       openAlert({
@@ -120,8 +139,55 @@ export const patchApiMethod = () => {
         message: `오류가 발생했습니다.\nstatus: ${err.status}\nmessage: ${err.message}`,
       });
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+    onSuccess: () => {
+      openAlert({
+        type: 'success',
+        message: 'Method 수정이 완료되었습니다.',
+      });
+    },
+  });
+};
+
+export const patchApiPipeline = () => {
+  const queryClient = useQueryClient();
+  const { openAlert } = useAlert();
+
+  return useMutation({
+    mutationFn: (params: ApiParam<Pipeline>) =>
+      http.patch('/pipeline', { body: params }),
+    onMutate: async (params: ApiParam<Pipeline>) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.all });
+      const origin = queryClient.getQueryData(queryKeys.all);
+
+      queryClient.setQueryData(queryKeys.all, (origin: ApiData[]) => {
+        const { path, key, data } = params;
+
+        return origin.map((api) => {
+          if (api.path === path) {
+            api.pipeline[key as string] = data;
+          }
+          return api;
+        });
+      });
+
+      return { origin };
+    },
+    onError: (err: Error, _, context) => {
+      queryClient.setQueryData(queryKeys.all, context?.origin);
+      openAlert({
+        type: 'error',
+        message: `오류가 발생했습니다.\nstatus: ${err.status}\nmessage: ${err.message}`,
+      });
+    },
+    onSettled: (data, error, variables) => {
+      const { path } = variables;
+      queryClient.invalidateQueries({ queryKey: queryKeys.api(path) });
+    },
+    onSuccess: () => {
+      openAlert({
+        type: 'success',
+        message: 'Pipeline 수정이 완료되었습니다.',
+      });
     },
   });
 };
@@ -132,7 +198,7 @@ export const patchApiResponse = () => {
 
   return useMutation({
     mutationFn: (params: ApiParam<Response>) =>
-      http.patch('/api/v1/json/response', { body: params }),
+      http.patch('/response', { body: params }),
     onMutate: async (params: ApiParam<Response>) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
@@ -150,6 +216,9 @@ export const patchApiResponse = () => {
 
       return { origin };
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.all });
+    },
     onError: (err: Error, _, context) => {
       queryClient.setQueryData(queryKeys.all, context?.origin);
       openAlert({
@@ -157,9 +226,11 @@ export const patchApiResponse = () => {
         message: `오류가 발생했습니다.\nstatus: ${err.status}\nmessage: ${err.message}`,
       });
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.all });
-      openAlert({ type: 'success', message: '저장 되었습니다' });
+    onSuccess: () => {
+      openAlert({
+        type: 'success',
+        message: 'Response 저장이 완료되었습니다.',
+      });
     },
   });
 };

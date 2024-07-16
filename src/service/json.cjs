@@ -1,6 +1,7 @@
 const $fs = require('fs');
 const $path = require('path');
 const { glob: $glob } = require('glob');
+const defaultCode = `function pipeline(request, get, set) {\n\t// const { query, body} = request 요청정보\n\t// const data = get(); 데이터 가저오기\n\t// set((prev) => prev); 데이터 업데이트\n\treturn get();\n}`;
 
 const hasDir = (path) => {
   try {
@@ -9,7 +10,6 @@ const hasDir = (path) => {
     return false;
   }
 };
-
 const root = $path.resolve(process.cwd(), './src/json');
 const getBasePath = (path) => $path.resolve(process.cwd(), `./src/json${path}`);
 const getJsonData = (path) => {
@@ -52,6 +52,53 @@ const removeJson = (path) => {
 };
 
 const json = ({ app }) => {
+  app.post('/api/v1/json/test', (req, res) => {
+    try {
+      const { path, method, body } = req.body;
+      const basePath = getBasePath(path);
+      let { pipeline, response } = getJsonData(basePath);
+
+      const data = (() => {
+        try {
+          const { value } = pipeline[method];
+          const request = value
+            .slice(value.indexOf('(') + 1, value.indexOf(')'))
+            .split(',')[0]
+            .trim();
+          const code = value.slice(
+            value.indexOf('{') + 1,
+            value.lastIndexOf('}')
+          );
+
+          const getResponse = () => response;
+          const setResponse = (callback) => {
+            response = callback(response);
+          };
+
+          const fn = new Function(request, 'get', 'set', code);
+          const result = fn(
+            { query: req.query, body },
+            getResponse,
+            setResponse
+          );
+
+          return {
+            response,
+            result,
+          };
+        } catch (err) {
+          return new Error(err);
+        }
+      })();
+
+      data instanceof Error
+        ? res.status(400).send('Pipeline 코드 오류')
+        : res.send(data);
+    } catch (err) {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+
   app.get('/api/v1/json/all', async (_, res) => {
     try {
       const filePaths = $glob.sync(`${root}/**/*.json`, { nodir: true });
@@ -76,11 +123,7 @@ const json = ({ app }) => {
         data: allJsons,
       });
     } catch (err) {
-      res.status(500).send({
-        code: 500,
-        message: 'Internal Server Error',
-        err,
-      });
+      res.status(500).send('Internal Server Error');
     }
   });
 
@@ -98,11 +141,7 @@ const json = ({ app }) => {
         data,
       });
     } catch (err) {
-      res.status(500).send({
-        code: 500,
-        message: 'Internal Server Error',
-        err,
-      });
+      res.status(500).send('Internal Server Error');
     }
   });
 
@@ -113,23 +152,16 @@ const json = ({ app }) => {
 
       res.sendFile(`${basePath}/index.json`);
     } catch (err) {
-      res.status(500).send({
-        code: 500,
-        message: 'Internal Server Error',
-      });
+      res.status(500).send('Internal Server Error');
     }
   });
 
-  /**
-   * JSON METHODS API
-   */
   app.use('/api/v1/json/:id', (req, res) => {
     try {
       const { path, key, data } = req.body;
       const basePath = getBasePath(path);
       const jsonData = getJsonData(basePath);
       const id = req.params.id;
-      const isDataTypeArray = Array.isArray(jsonData[id]);
 
       switch (req.method) {
         case 'POST':
@@ -145,16 +177,18 @@ const json = ({ app }) => {
             });
 
             if (lists.indexOf(data) > -1) {
-              return res.status(400).send({
-                code: 400,
-                message: 'Bad Request',
-              });
+              return res.status(400).send('동일한 API path가 존재합니다.');
             }
 
             createJson(getBasePath(data), { ...jsonData, path: data });
             removeJson(basePath);
-            return;
+
+            return res.send({
+              code: 200,
+              message: 'Ok',
+            });
           }
+
           setJsonData(basePath, {
             ...jsonData,
             updatedDate: new Date().toISOString(),
@@ -170,16 +204,24 @@ const json = ({ app }) => {
                   ...jsonData[id],
                   [key]: data,
                 };
+              } else if (id === 'pipeline') {
+                return {
+                  ...jsonData[id],
+                  [key]: data.hasOwnProperty('value')
+                    ? data
+                    : { ...data, value: defaultCode },
+                };
               } else {
                 return JSON.parse(data);
               }
             })(),
-            ...(!isDataTypeArray && {
-              pipeline: {
-                ...jsonData.pipeline,
-                [key]: { isActive: false, code: '' },
-              },
-            }),
+            ...(id === 'methods' &&
+              data && {
+                pipeline: {
+                  ...jsonData.pipeline,
+                  [key]: { isActive: false, value: defaultCode },
+                },
+              }),
           });
           break;
 
@@ -201,10 +243,7 @@ const json = ({ app }) => {
           });
           break;
         default:
-          res.status(400).send({
-            code: 400,
-            message: 'Bad Request',
-          });
+          res.status(400).send('잘못된 Method 요청입니다.');
       }
 
       res.send({
@@ -212,16 +251,10 @@ const json = ({ app }) => {
         message: 'Ok',
       });
     } catch (err) {
-      res.status(500).send({
-        code: 500,
-        message: 'Internal Server Error',
-      });
+      res.status(500).send('Internal Server Error');
     }
   });
 
-  /**
-   * JSON API
-   */
   app.use('/api/v1/json', (req, res) => {
     try {
       const { path, data } = req.body;
@@ -243,6 +276,18 @@ const json = ({ app }) => {
 
         case 'POST':
           data.createdDate = new Date().toISOString();
+
+          const pipeline = Object.keys(data.methods).reduce((acc, method) => {
+            acc[method] = {
+              isActive: false,
+              value: defaultCode,
+            };
+            return acc;
+          }, {});
+
+          if (!createJson(basePath, { ...data, pipeline }))
+            throw new Error('api create failed!');
+          break;
 
         case 'PATCH':
           data.updatedDate = new Date().toISOString();
@@ -268,10 +313,7 @@ const json = ({ app }) => {
         message: 'Ok',
       });
     } catch (err) {
-      res.status(500).send({
-        code: 500,
-        message: 'Internal Server Error',
-      });
+      res.status(500).send('Internal Server Error');
     }
   });
 };

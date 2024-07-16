@@ -1,0 +1,121 @@
+.api-create {
+  padding: 10px 14px;
+  border: 1px solid $secondary-color;
+  border-radius: 4px;
+  background: $background;
+  > .MuiStack-root {
+    min-height: 32px;
+    gap: 16px;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    > .MuiTypography-root {
+      padding: 0;
+      margin-right: auto;
+      font-weight: 600;
+    }
+  }
+  .input-form {
+    padding: 8px 14px;
+    .MuiFormGroup-root {
+      margin-top: 14px;
+      + .MuiFormGroup-root {
+        margin-top: 26px;
+      }
+    }
+    .MuiFormLabel-root {
+      margin-bottom: 4px;
+      font-size: 0.7rem;
+      + .MuiBox-root {
+        border: 1px solid $secondary-color;
+        border-radius: 4px;
+        .MuiTableContainer-root.map-input {
+          padding: 6px 0px;
+        }
+      }
+    }
+    .monaco-editor .squiggly-warning {
+      display: none;
+    }
+  }
+  .upload-form {
+    > .MuiStack-root {
+      gap: 12px;
+      padding: 10px 14px;
+      height: 43px;
+      border-bottom: 1px solid $secondary-color;
+      border-radius: 4px 4px 0 0;
+      background: $secondary-variant;
+      flex-direction: row;
+      align-items: center;
+      box-sizing: border-box;
+      .MuiSvgIcon-root {
+        width: 0.9rem;
+        height: 0.9rem;
+      }
+      .MuiButton-root {
+        display: flex;
+        padding: 0;
+        gap: 4px;
+        border: none;
+        font-size: 0.7rem;
+        font-weight: 500;
+        align-items: center;
+      }
+    }
+    .MuiChip-root {
+      padding: 8px 6px 8px 12px;
+      font-size: 0.7rem;
+      .MuiTypography-root {
+        margin-left: 4px;
+        font-size: 0.7rem;
+      }
+      .MuiChip-deleteIcon {
+        margin: 0 0 06px;
+        font-size: 18px;
+      }
+    }
+  }
+  .drop-box {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    border-radius: 0;
+    color: $primary-variant;
+    background: $background;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      border-color: $primary-color;
+      background: $secondary-variant;
+    }
+    > .MuiSvgIcon-root {
+      height: 1.8rem;
+      width: 1.8rem;
+    }
+    > .MuiTypography-root {
+      margin-top: 4px;
+      font-size: 0.8rem;
+    }
+    > .MuiBox-root {
+      z-index: 10;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      border: 1.4px dashed $secondary-color;
+      border-radius: 0 0 4px 4px;
+      &:hover {
+        border-color: $primary-color;
+      }
+    }
+    > .MuiButton-root {
+      z-index: 11;
+      position: relative;
+      margin-top: 12px;
+    }
+  }
+}

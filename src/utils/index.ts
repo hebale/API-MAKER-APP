@@ -81,6 +81,7 @@ export const highlightMarker = (
   );
 };
 
+/* 필요시 제작 */
 export const throttle = (cb: () => void, delay: number) => {};
 
 export const debounce = (cb: (...args: any) => void, delay: number) => {

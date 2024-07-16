@@ -15,7 +15,7 @@ export const putApi = () => {
   const { openAlert } = useAlert();
 
   return useMutation({
-    mutationFn: (param: putApiProp) => http.put('api/v1/json', { body: param }),
+    mutationFn: (param: putApiProp) => http.put('/', { body: param }),
     onMutate: async (param: putApiProp) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
@@ -58,7 +58,7 @@ export const putApiHeader = () => {
 
   return useMutation({
     mutationFn: (params: ApiParam<Header>) =>
-      http.put('/api/v1/json/headers', { body: params }),
+      http.put('/headers', { body: params }),
     onMutate: async (params: ApiParam<Header>) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);
@@ -99,7 +99,7 @@ export const putApiMethod = () => {
 
   return useMutation({
     mutationFn: (params: ApiParam<Method>) =>
-      http.put('/api/v1/json/methods', { body: params }),
+      http.put('/methods', { body: params }),
     onMutate: async (params: ApiParam<Method>) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.all });
       const origin = queryClient.getQueryData(queryKeys.all);

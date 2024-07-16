@@ -1,4 +1,59 @@
+import { colorSet } from './color';
+
+const {
+  $pointColor,
+  $primaryColor,
+  $primaryVariant,
+  $secondaryColor,
+  $secondaryVariant,
+  $background,
+} = colorSet;
+
 export default {
+  MuiTabs: {
+    styleOverrides: {
+      root: {
+        zIndex: 10,
+        position: 'relative',
+        bottom: -1,
+        minHeight: '32px',
+      },
+      flexContainer: {
+        zIndex: 1,
+        position: 'relative',
+      },
+      indicator: {
+        zIndex: 0,
+        marginBottom: -1,
+        height: '32px',
+        border: `1px solid ${$secondaryColor}`,
+        borderBottomColor: $background,
+        borderRadius: '4px 4px 0 0',
+        background: $secondaryVariant,
+      },
+    },
+  },
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        padding: 0,
+        minHeight: '34px',
+        minWidth: '80px',
+        fontSize: '0.65rem',
+        textTransform: 'capitalize',
+      },
+    },
+  },
+  MuiTabPanel: {
+    styleOverrides: {
+      root: {
+        position: 'relative',
+        padding: 0,
+        border: `1px solid ${$secondaryColor}`,
+        borderRadius: '4px',
+      },
+    },
+  },
   MuiContainer: {
     styleOverrides: {
       root: {

@@ -99,7 +99,7 @@ const UploadForm = (_: null, ref: RefType) => {
   };
 
   return (
-    <Box className="upload-box">
+    <Box className="upload-form">
       <Stack>
         <Tooltip
           PopperProps={{

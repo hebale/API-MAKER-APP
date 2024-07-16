@@ -3,6 +3,7 @@ import type {
   ButtonProps,
   DialogProps as MuiDialogProps,
 } from '@mui/material';
+import { ReactElement } from 'react';
 
 export type DownloadFileProps = {
   url: string;
@@ -124,14 +125,9 @@ export type CopyButtonProps = {
   onError?: (msg: string) => void;
 };
 
-export type SaveButtonProps = {
+export type UtilButtonProps = {
   title?: string;
-  disabled?: boolean;
-  onClick: () => void;
-};
-
-export type RefreshButtonProps = {
-  title?: string;
+  icon?: ReactElement;
   disabled?: boolean;
   onClick: () => void;
 };

@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
 import { Box, Stack, Button, Tab, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import RefreshButton from '~/features/RefreshButton';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import UtilButton from '~/features/UtilButton';
+import useAlert from '~/hooks/useAlert';
 import Form from './Form';
 import Upload from './Upload';
-import useAlert from '~/hooks/useAlert';
 import { getApiList, postApi } from '~/api';
 import type { EventRef, RefType } from './Form';
 
@@ -47,10 +48,14 @@ const CreateBox = () => {
   };
 
   return (
-    <Box className="create-box">
+    <Box className="api-create">
       <Stack>
         <Typography>API 생성</Typography>
-        <RefreshButton title="Reset" onClick={onRefreshForm} />
+        <UtilButton
+          title="Reset"
+          icon={<RefreshIcon />}
+          onClick={onRefreshForm}
+        />
         <Button variant="contained" onClick={onCreateApi}>
           등록
         </Button>

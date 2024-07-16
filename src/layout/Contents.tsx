@@ -4,10 +4,10 @@ import type { ReactElement } from 'react';
 
 export type ContentsProps = {
   ribbon?: ReactElement;
-  items?: item[];
+  items?: Item[];
 };
 
-export type item = {
+export type Item = {
   key: string;
   component: ReactElement;
 };

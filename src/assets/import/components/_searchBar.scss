@@ -1,0 +1,21 @@
+/* API 검색 바 */
+.search-bar {
+  width: 100%;
+  .MuiStack-root {
+    margin-bottom: 12px;
+    flex-direction: row;
+    .MuiToggleButtonGroup-root {
+      margin-right: 8px;
+      background: $background;
+      .Mui-selected {
+        font-weight: 500;
+        color: $background;
+        background: $primary-color;
+      }
+    }
+    .MuiInputBase-root {
+      width: 100%;
+      align-items: center;
+    }
+  }
+}

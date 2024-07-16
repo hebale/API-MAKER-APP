@@ -1,0 +1,67 @@
+/* 메뉴 선택 토글 */
+.menu-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .MuiToggleButtonGroup-root {
+    gap: 1px;
+    .MuiToggleButton-root {
+      width: 130px;
+      padding: 6px 16px;
+      font-size: 0.6rem;
+      text-transform: capitalize;
+      background: $background;
+      &.Mui-selected {
+        color: $background;
+        background: $primary-color;
+        .MuiBox-root {
+          display: block;
+          border: 1px solid $background;
+          color: $primary-color;
+          &.active {
+            font-weight: 600;
+            color: $primary-color;
+            background: $background;
+          }
+        }
+      }
+      &:first-child {
+        padding-left: 26px;
+        border-radius: 0 0 0 24px;
+      }
+      &:last-child {
+        padding-right: 26px;
+        border-radius: 0 0 24px 0;
+      }
+    }
+    /* 노출된 메뉴위치 표시 */
+    .MuiStack-root {
+      display: inline-flex;
+      margin-left: 8px;
+      flex-direction: row;
+      .MuiBox-root {
+        display: none;
+        width: 9px;
+        height: 12px;
+        line-height: 12px;
+        border: 1px solid $primary-variant;
+        text-align: center;
+        &.active {
+          background: $primary-variant;
+          color: $primary-variant;
+        }
+        & + .MuiBox-root {
+          border-left: none;
+        }
+        &:first-child {
+          border-top-left-radius: 2px;
+          border-bottom-left-radius: 2px;
+        }
+        &:last-child {
+          border-top-right-radius: 2px;
+          border-bottom-right-radius: 2px;
+        }
+      }
+    }
+  }
+}
