@@ -1,6 +1,6 @@
-@import './menuBar';
-@import './searchBar';
-@import './apiList';
-@import './apiCreate';
-@import './apiLog';
-@import './apiPipeline';
+@use 'menuBar';
+@use 'searchBar';
+@use 'apiList';
+@use 'apiCreate';
+@use 'apiLog';
+@use 'apiPipeline';

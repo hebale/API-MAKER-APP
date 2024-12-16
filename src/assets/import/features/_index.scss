@@ -1,4 +1,4 @@
-@import './_monaco';
-@import './_mapInput';
-@import './_alert';
-@import './buttons';
+@use 'monaco';
+@use 'mapInput';
+@use 'alert';
+@use 'buttons';

@@ -1,0 +1,3 @@
+@function colorOpacity($color, $opacity) {
+  @return $color + $opacity;
+}

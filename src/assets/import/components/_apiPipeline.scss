@@ -1,3 +1,5 @@
+@use '../variables' as *;
+
 .api-pipeline {
   padding: 10px 14px;
   border: 1px solid $secondary-color;

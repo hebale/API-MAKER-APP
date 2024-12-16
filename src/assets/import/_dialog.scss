@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .MuiDialog-container {
   .json-dialog {
     border: 1px solid $secondary-color;

@@ -62,7 +62,12 @@ const webpackConfig = (() => {
               },
             },
             'css-loader',
-            'sass-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                api: 'modern-compiler',
+              },
+            },
           ],
         },
       ],

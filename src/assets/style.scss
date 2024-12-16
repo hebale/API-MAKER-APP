@@ -1,16 +1,5 @@
-$point-color: #ff684d;
-$primary-color: #262626;
-$primary-variant: #a6a6a6;
-$secondary-color: #cbcbcb;
-$secondary-variant: #f2f2f2;
-$background: #fff;
-
-@function colorOpacity($color, $opacity) {
-  @return $color + $opacity;
-}
-
-@import './import/_layout';
-@import './import/_dialog';
-@import './import/_common';
-@import './import/features/_index';
-@import './import/components/_index';
+@use 'import/layout';
+@use 'import/dialog';
+@use 'import/common';
+@use 'import/features/index' as features;
+@use 'import/components/index' as components;
